@@ -6,10 +6,10 @@ const express = require('express'),
 
 /* GET home page. */
 router.post('/', upload.single('keyFile'), async (req, res, next) => {
-        console.log(req.file);
+        console.log(req.body);
         res.status(200).json({
             message: "regOK",
-            name: req.file.originalname
+            // name: req.file.originalname
         })
     });
 
