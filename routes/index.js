@@ -6,20 +6,22 @@ const express = require('express'),
     fs = require('fs');
 
 
-router.post('/', async (req, res, next) => {
-    console.log(req.body);
-    fs.writeFile("bc_network/data/dd/keystore/test3.json", req.body.keyFile, function(err){
-        if (err) throw err;
-        console.log("success");
-        res.status(200).json({
-            message: "regOK",
-            // name: req.file.originalname
-        })
+router.post('/', upload.single('keyData'), async (req, res, next) => {
+    const json = (JSON.stringify(req.file.buffer.toString('utf8')));
+    console.log('hello');
+    fs.writeFile(`bc_network/data/dd/keystore/${req.file.originalname}`, JSON.parse(json), 'utf8', (err, result) => {
+
+        if(err) {
+            res.json({
+                message: "error"
+            });
+            return;
+        }
+        res.json({
+            "message": "ok",
+            result
+        });
     });
-    // res.status(200).json({
-    //     message: "regOK",
-    //     // name: req.file.originalname
-    // })
 });
 /* GET home page. */
 // router.post('/', upload.single('keyFile'), async (req, res, next) => {
