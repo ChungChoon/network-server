@@ -1,27 +1,27 @@
 "use strict";
 
 const express = require('express'),
-  router = express.Router(),
+    router = express.Router(),
     upload = require('../config/multer').upload,
     fs = require('fs');
 
 
-router.post('/', upload.single('keyData'), async (req, res, next) => {
-    const json = (JSON.stringify(req.file.buffer.toString('utf8')));
-    console.log('hello');
-    fs.writeFile(`bc_network/data/dd/keystore/${req.file.originalname}`, JSON.parse(json), 'utf8', (err, result) => {
-
-        if(err) {
+router.post('/', async (req, res, next) => {
+    console.log(req.body.key);
+    let key_data = req.body.key;
+    let key_name = req.body.mail;
+    fs.writeFile(`bc_network/data/dd/keystore/${key_name}.json`, key_data, 'utf8', (err, result) => {
+        if (err) {
             res.json({
                 message: "error"
             });
             return;
+        } else {
+            res.json({
+                "message": "ok"
+            });
         }
-        res.json({
-            "message": "ok",
-            result
-        });
-    });
+    })
 });
 /* GET home page. */
 // router.post('/', upload.single('keyFile'), async (req, res, next) => {
@@ -33,4 +33,3 @@ router.post('/', upload.single('keyData'), async (req, res, next) => {
 //     });
 
 module.exports = router;
-
